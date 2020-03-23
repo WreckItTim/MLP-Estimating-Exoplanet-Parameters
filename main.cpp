@@ -3,7 +3,7 @@
  
  The purpose of this code is to provide a lightweight implementation of training new MLP's
  
- A paper describing the methods can be found here:
+ A paper describing the methods can be found on the github
  
  Open any .csv data file in our GitHub for an example on how to format data fed into the MLP.
  Data files to be used by the MLP need to follow this format:
@@ -13,9 +13,11 @@
  
  To use this code, simply run and specify paths of a data .csv file for training, a data .csv file for validation, and a data .csv file for testing. If you enter 'auto' when prompted, the program will autodetect the number of input nodes and output nodes to make a new MLP. Results will be output to the same folder that the training data file is saved to on your computer. Results consist of a subfolder with the MLP and predictions on the validation set after each epoch, the MLP written as a .csv file at the epoch with the lowest validation RMSE next to your data file, and the predictions on your test set using that MLP with lowest validation RMSE.
  
- The default MLP used when you enter 'auto' follows the Greedy0 MLP as presented in the paper. This is 3 hidden layers with 64-64-32 nodes in the layers, using ELU activation function; an output layer using sigmoid activation function, the labels in your data files will automatically be normalized; L1 of 1E-7; L2 of 1E-5; Max-Norm radius of 6.1; a static learning momentum of 0.9; a cyclic learning rate that cycles between 0.1 and 0.9 with a triangular cycle and step-size of 2*Epoch; trains up to 2048 epochs; is a regressor; outputs MLP, validation RMSE, and test predictions for each epoch.
+ The default MLP used when you enter 'auto' follows the Greedy0 MLP as presented in the paper. This is 3 hidden layers with 64-64-32 nodes in the layers, using ELU activation function; an output layer using sigmoid activation function, the labels in your data files will automatically be normalized; L1 of 1E-6; L2 of 1E-5; Max-Norm radius of 6.1; a static learning momentum of 0.9; a cyclic learning rate that cycles between 0.1 and 0.9 with a triangular cycle and step-size of 2*Epoch; trains up to 1000 epochs; is a regressor; outputs greedy optimized MLP and test predictions for that MLP, along with .csv files that track training and validation rmse for learning curves.
  
- If you want to change the MLP parameters, optionally type 'own' instead of 'auto' into the terminal when it asks which you want to use. This will trigger a secret sub-menu which will walk you through each hyper-parameter of the MLP.
+ If you want to change the MLP parameters, optionally type 'own' instead of 'auto' into the terminal when it asks which you want to use. This will trigger a sub-menu which will walk you through each hyper-parameter of the MLP. Alternatively, just change the values starting at line 2976.
+ 
+ Here is my email for bugs, questions, or w/e: Tim.K.Johnsen@gmail.com
  */
 
 #include <iostream>
@@ -3210,7 +3212,6 @@ void trainMLP_UI() {
     // normalize labels between 0.01 and 0.99
     mlp->normalize(trainingDataSet);
     mlp->normalize(validationDataSet);
-    mlp->normalize(testingDataSet);
 
     // set other MLP hyper-paremeters
     mlp->batchSize = batchSize;
@@ -3267,18 +3268,23 @@ void trainMLP_UI() {
                 trainingDataSet->write(epochFolder + "Train_Set_Predictions.csv");
         }
 
-        mlp->predict(validationDataSet, false);
-        mlp->predict(testingDataSet, false);
         if (classBinary) {
+            mlp->predict(validationDataSet, false);
+            mlp->predict(testingDataSet, false);
             binValErr[epoch] = binaryClassify(validationDataSet);
             binaryClassify(testingDataSet);
         }
         if (classMulti) {
+            mlp->predict(validationDataSet, false);
+            mlp->predict(testingDataSet, false);
             multiValErr[epoch] = multiClassify(validationDataSet, multiProb);
             multiClassify(testingDataSet, multiProb);
         }
-        mlp->predict(testingDataSet, true);
-
+        if(regress) {
+            mlp->predict(validationDataSet, false);
+            mlp->predict(testingDataSet, true);
+        }
+        
         if (outputValPredictions)
             validationDataSet->write(epochFolder + "Validation_Predictions");
         if (outputTestPredictions)
@@ -3328,9 +3334,9 @@ void trainMLP_UI() {
 }
 void testMLP_UI() {
     // path to data file (do not put file extension in name) reads from .csv
-    string testDataPath = "/Users/tjohnsen/Documents/GitHub/MLP-Estimating-Exoplanet-Parameters/Binned_Model_Datasets/Albedo_Models_248Bins0.3to1.0microns__DroppedDegeneraciesFsed11_Test_Noise5%.csv"; // test data .csv file
+    string testDataPath = ""; // test data .csv file
     cout << "Enter full file path to Spectra (with file extension):" << endl;
-    //cin >> testDataPath;
+    cin >> testDataPath;
     
     bool addNoise = false;
     double noise = 0.0;
@@ -3348,9 +3354,9 @@ void testMLP_UI() {
         testDataSet->addNoise(noise);
     
     // path to pretrained MLP (do not put file extension in name) reads from .csv
-    string mlpPath = "/Users/tjohnsen/Documents/GitHub/MLP-Estimating-Exoplanet-Parameters/MLP_Results/5%_Noise/MLP_Epoch951";
+    string mlpPath = "";
     cout << "Enter .csv file path to Pretrained MLP (no file extension):" << endl;
-    //cin >> mlpPath;
+    cin >> mlpPath;
     
     // read pretrained MLP
     MLP* mlp = MLP::read(mlpPath);
