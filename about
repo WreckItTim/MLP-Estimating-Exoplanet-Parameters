@@ -1,0 +1,10 @@
+Youtube walkthrough: https://youtu.be/OsnO7RKGaeQ 
+
+This is a repository for a publication by Tim K Johnsen (me), Mark S Marley, and Virginia C Gulick:
+A Multilayer Perceptron for Obtaining Quick Parameter Estimations of Cool Exoplanets from Geometric Albedo Spectra 
+DOI: https://doi.org/10.1088/1538-3873/ab740d
+published by Publications of the Astronomical Society of the Pacific, 132:044502 (9pp), 2020 April. 
+
+Repository has stand-alone OS-dependent C++ code, trained models, and raw data. 
+Initial MLP code was developed with support of the NAI grant # NNX15BB01. 
+The study on exoplanet applications and adaption to the code was supported by the Seller Exoplanet Environment Collaboration.
