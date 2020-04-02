@@ -1,8 +1,8 @@
-Youtube walkthrough give brief introduction to problem and methods presented in paper followed by a tutorial on how to use the code to train and test models: https://youtu.be/OsnO7RKGaeQ 
-
 This is a repository with all resources used during a study that was published by Tim K Johnsen (me), Mark S Marley, and Virginia C Gulick: A Multilayer Perceptron for Obtaining Quick Parameter Estimations of Cool Exoplanets from Geometric Albedo Spectra. DOI: https://doi.org/10.1088/1538-3873/ab740d, published by Publications of the Astronomical Society of the Pacific, 132:044502 (9pp), 2020 April.
 
-Repository has stand-alone OS-dependent C++ code used to prepare data, train, and test models; the trained models presented in paper; all results from the training process; and all data files used. 
+The linked Youtube walkthrough gives a brief introduction to the problem and methods presented in our paper followed by a tutorial on how to use source code to train and test models: https://youtu.be/OsnO7RKGaeQ 
+
+Repository has stand-alone OS-dependent (Mac and Windows) C++ code used to prepare data, train, and test models; the trained models presented in paper; all results from the training process; and all data files used. 
 
 Initial MLP code was developed with support of the NAI grant # NNX15BB01. 
 The study on exoplanet applications and adaption of the code was supported by the Seller Exoplanet Environment Collaboration.
