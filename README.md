@@ -10,9 +10,11 @@ The user need not concern themselves with the formatting of the MLP .csv files a
 
 The user must know the formatting for the data .csv files, if wanting to input bulk spectra. Below is a table showing an example of the formatting. The first row in the .csv file is a header file: the first column in the header is simply “name”; subsequent columns in the header are numerical wavelength values; subsequent columns are the names of the labels (these must contain at least one character that is not a number). Each row after the header row is a new spectrum with according name, wavelength intensities, and label values.
 
-Name	0.503	0.5058	Metallicity	Temperature [K]
-Jupiter	0.476937	0.478186	0.6	128
-Saturn	0.424938	0.427929	1.0	95
+Name,0.503,0.5058,Metallicity,Temperature
+
+Jupiter,0.476937,0.478186,0.6,128
+
+Saturn,0.424938,0.427929,1.0,95
 
 The Testing code is set-up as a terminal UI that will prompt the user for the path to the data file followed by a path to the MLP file. The paths should be full paths to where the files are saved on the user’s computer, use either ‘/’ or ‘\\’ when specifying paths and do not enter the file extension; for example, “C:/Data/Albedo_Spectra” or “C:/MLPs/Greedy0”.
 
